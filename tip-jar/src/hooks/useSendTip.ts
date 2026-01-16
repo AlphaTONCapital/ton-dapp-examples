@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from 'react';
 import { useTonConnectUI, useTonAddress } from '@tonconnect/ui-react';
-import { toNano } from '@ton/core';
+import { toNano, beginCell } from '@ton/core';
 import { recordTip } from '@/lib/actions/tips';
 import { useTelegramAuth } from './useTelegramAuth';
 
@@ -41,15 +41,23 @@ export function useSendTip() {
         const nanoAmount = toNano(amount.toString());
 
         // Build the transaction
+        // For TON text comments, create a Cell with 4-byte zero prefix followed by the message
+        const payload = message
+          ? beginCell()
+              .storeUint(0, 32) // 4-byte zero prefix for text comments
+              .storeStringTail(message)
+              .endCell()
+              .toBoc()
+              .toString('base64')
+          : undefined;
+
         const transaction = {
           validUntil: Math.floor(Date.now() / 1000) + 300, // 5 minutes
           messages: [
             {
               address: RECIPIENT_ADDRESS,
               amount: nanoAmount.toString(),
-              payload: message
-                ? Buffer.from(message).toString('base64')
-                : undefined,
+              payload,
             },
           ],
         };

@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 import { TonWalletButton } from '@/components/ton/TonConnectButton';
 import { useTma } from '@/components/tma/TmaProvider';
 import { useTelegramAuth } from '@/hooks/useTelegramAuth';
@@ -34,13 +35,14 @@ export default function Home() {
   const handleSendTip = async (amount: number, message?: string) => {
     try {
       await sendTip({ amount, message });
+      toast.success(`Successfully sent ${amount} TON!`);
       // Invalidate queries to refetch data
       queryClient.invalidateQueries({ queryKey: ['tips'] });
       queryClient.invalidateQueries({ queryKey: ['leaderboard'] });
       queryClient.invalidateQueries({ queryKey: ['tipStats'] });
     } catch (error) {
+      toast.error('Failed to send tip');
       console.error('Failed to send tip:', error);
-      // Error is already displayed via the hook
     }
   };
 
