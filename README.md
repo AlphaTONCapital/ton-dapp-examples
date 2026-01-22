@@ -10,6 +10,8 @@ Practical example Telegram Mini Apps built with TON blockchain integration.
 
 A Telegram Mini App for sending TON tips with optional messages.
 
+**Try it:** [@TipinJarBot](https://t.me/TipinJarBot)
+
 - Send tips with messages (280 char limit)
 - View transaction history
 - Leaderboard of top tippers
@@ -18,6 +20,8 @@ A Telegram Mini App for sending TON tips with optional messages.
 ### Poll Stakes (`/poll-stakes`)
 
 A prediction market Mini App where users stake TON on poll outcomes.
+
+**Try it:** [@pollstakesbot](https://t.me/pollstakesbot)
 
 - Create yes/no polls (1 hour to 7 day deadlines)
 - Stake TON on poll outcomes
